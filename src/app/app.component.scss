@@ -1,0 +1,27 @@
+.menu {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 0;
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    border: 1px solid gray;
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(188, 188, 247);
+      color: white;
+    }
+
+    &.active {
+      background-color: rgb(141, 141, 253);
+      color: white;
+    }
+  }
+}

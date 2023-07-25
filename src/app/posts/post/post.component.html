@@ -1,0 +1,9 @@
+<div class="post" *ngIf="post" appHighlight>
+  <div class="post__name">
+    <h2>{{ post.name }}</h2>
+    <button (click)="deletePost(post.id)">❌</button>
+  </div>
+  <div class="post__content">
+    <p>{{ post.content }}</p>
+  </div>
+</div>
