@@ -32,7 +32,14 @@ import { AuthComponent } from './auth/auth.component';
     FilterItemsPipe,
     AuthComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormlyModule.forRoot(), ReactiveFormsModule, FormlyBootstrapModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormlyModule.forRoot(),
+    ReactiveFormsModule,
+    FormlyBootstrapModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

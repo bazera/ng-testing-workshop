@@ -5,93 +5,64 @@ import {
   tick,
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable, of } from 'rxjs';
 import { AppComponent } from './app.component';
+import { UserComponent } from './user/user/user.component';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import {
-  NavigationEnd,
-  Router,
-  RouterLink,
-  provideRouter,
-} from '@angular/router';
+import { Router, RouterLink, provideRouter } from '@angular/router';
 
 @Component({ selector: 'app-user', template: '' })
-class UserMockComponent {}
+class MockUserComponent {}
 
-@Component({ selector: 'router-outlet', template: '' })
-class RouterOutletMockComponent {}
+@Component({ selector: 'app-about-us', template: '' })
+class AboutUsMockComponent {}
 
-@Component({ selector: 'app-contact', template: '' })
-class ContactMockComponent {}
-
-describe('AppComponent1', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        UserMockComponent,
-        RouterOutletMockComponent,
-      ],
-      providers: [],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
-
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
-
-describe('AppComponent2', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
-  let routerLinks: RouterLink[];
   let routerElements: DebugElement[];
-  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [AppComponent],
+      declarations: [AppComponent, MockUserComponent],
       providers: [
-        provideRouter([{ path: 'contact', component: ContactMockComponent }]),
+        provideRouter([{ path: 'about-us', component: AboutUsMockComponent }]),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router);
 
     fixture.detectChanges();
 
     routerElements = fixture.debugElement.queryAll(By.directive(RouterLink));
-    routerLinks = routerElements.map((el) => el.injector.get(RouterLink));
   });
 
-  it('should display router links', () => {
-    expect(routerLinks.length).withContext('should have 3 routerLinks').toBe(4);
+  it('should create a component instance', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should display 4 router links', () => {
+    expect(routerElements.length).toBe(4);
+  });
+
+  it('should navigate to about-us', fakeAsync(() => {
+    const aboutUs = routerElements[2];
+
+    aboutUs.triggerEventHandler('click', { button: 0 });
+
+    tick();
+
+    expect(TestBed.inject(Router).url).toBe('/about-us');
+  }));
+
+  it('should have correct routerLinks', () => {
+    const routerLinks = routerElements.map((el) => el.injector.get(RouterLink));
     expect(routerLinks[0].href).toBe('/home');
     expect(routerLinks[1].href).toBe('/posts');
     expect(routerLinks[2].href).toBe('/about-us');
     expect(routerLinks[3].href).toBe('/contact');
   });
-
-  it('can click on contact in template', fakeAsync(() => {
-    const contactBtn = routerElements[3];
-
-    contactBtn.triggerEventHandler('click', { button: 0 });
-    tick();
-    fixture.detectChanges();
-
-    expect(TestBed.inject(Router).url).toBe('/contact');
-  }));
 });

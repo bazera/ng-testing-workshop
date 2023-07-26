@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserComponent } from './user.component';
 import { UserService } from '../user.service';
-import { User } from '../user.model';
 import { Observable, of } from 'rxjs';
+import { User } from '../user.model';
 
 class MockUserService {
-  getUser = () =>
+  getUser = (): Observable<User> =>
     of({
       name: 'Test Name',
       lastname: 'Test Lastname',
@@ -13,13 +13,13 @@ class MockUserService {
     });
 }
 
-describe('UserComponent1', () => {
+describe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
-  let mockUserService: UserService;
+  let mockUserServiceSpy: UserService;
 
   beforeEach(() => {
-    mockUserService = jasmine.createSpyObj<UserService>('UserService', {
+    mockUserServiceSpy = jasmine.createSpyObj<UserService>('UserService', {
       getUser: of({
         name: 'Test Name',
         lastname: 'Test Lastname',
@@ -29,45 +29,28 @@ describe('UserComponent1', () => {
 
     TestBed.configureTestingModule({
       declarations: [UserComponent],
-      providers: [{ provide: UserService, useValue: mockUserService }],
+      providers: [{ provide: UserService, useValue: mockUserServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
-    mockUserService = TestBed.inject(UserService);
 
     fixture.detectChanges();
   });
 
-  it('should fetch and display the user name 1', async () => {
-    fixture.detectChanges(); // Trigger change detection
-
-    expect(component.userName).toBe('Test Name');
-    expect(mockUserService.getUser).toHaveBeenCalled();
-  });
-});
-
-describe('UserComponent2', () => {
-  let component: UserComponent;
-  let fixture: ComponentFixture<UserComponent>;
-  let mockUserService: UserService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [UserComponent],
-      providers: [{ provide: UserService, useClass: MockUserService }],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(UserComponent);
-    component = fixture.componentInstance;
-    mockUserService = TestBed.inject(UserService);
-
-    fixture.detectChanges();
+  it('should create a component instance', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should fetch and display the user name 2', async () => {
-    fixture.detectChanges(); // Trigger change detection
-
+  it('should put user name into the variable', () => {
     expect(component.userName).toBe('Test Name');
+  });
+
+  it('should call getUser upon init', () => {
+    expect(mockUserServiceSpy.getUser).toHaveBeenCalled();
+  });
+
+  it('should call getUser only ones', () => {
+    expect(mockUserServiceSpy.getUser).toHaveBeenCalledTimes(1);
   });
 });

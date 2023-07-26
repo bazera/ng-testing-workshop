@@ -12,4 +12,12 @@ export class UserService {
   getUser(): Observable<User> {
     return this.http.get<User>(`http://localhost:3000/user`);
   }
+
+  getRagaca(): number {
+    return 1;
+  }
+
+  getRagaca2(): string {
+    return 'sdasd';
+  }
 }
