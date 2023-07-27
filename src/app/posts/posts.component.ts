@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from './posts.service';
+import { Post } from './post.model';
 
 @Component({
   selector: 'app-posts',
@@ -16,6 +17,8 @@ export class PostsComponent implements OnInit {
       .deletePost(id)
       .subscribe(() => (this.posts$ = this.postsService.getPosts()));
   }
+
+  delete(a: any) {}
 
   ngOnInit() {}
 }

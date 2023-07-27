@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
@@ -12,6 +13,8 @@ enum SectionNames {
   name: 'expandedPanel',
 })
 export class ExpandedPanelPipe implements PipeTransform {
+  constructor(private datePipe: DatePipe) {}
+
   transform(fields: FormlyFieldConfig[], type: string): FormlyFieldConfig[] {
     const baseFields: FormlyFieldConfig = {
       type: 'expansion-panel',

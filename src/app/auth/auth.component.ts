@@ -12,7 +12,7 @@ export class AuthComponent {
   constructor(private authService: AuthService) {}
 
   onLogin(username: string, password: string): void {
-    this.authService.login(username, password).then((isLoggedIn) => {
+    this.authService.login(username, password).subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
     });
   }
